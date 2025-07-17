@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, use } from "react";
 import { supabase } from "../supabaseClient";
 
 function App() {
@@ -6,6 +6,7 @@ function App() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [usersOnline, setUsersOnline] = useState([]);
+  const [color, setColor] = useState("#5A75B5");
 
   const chatContainerRef = useRef(null);
   const scroll = useRef();
@@ -125,14 +126,42 @@ function App() {
 
   if (!session) {
     return (
-      <div className="w-full flex h-screen justify-center items-center">
+      <div
+        className="w-full flex h-screen justify-center items-center"
+        style={{
+          backgroundColor: color,
+          backgroundImage: "url('https://www.transparenttextures.com/patterns/diagmonds-light.png')"
+        }}
+      >
         <button onClick={signIn}>Sign in with Google to chat</button>
       </div>
     );
   } else {
     return (
-      <div className="w-full flex h-screen justify-center items-center p-4">
-        <div className="border-[1px] border-gray-700 max-w-6xl w-full min-h-[600px] rounded-lg" >
+      <div
+        className="w-full flex h-screen justify-center items-center p-4"
+        style={{
+          backgroundColor: color,
+          backgroundImage: "url('https://www.transparenttextures.com/patterns/cubes.png')"
+        }}
+      >
+        <div
+          className="border-[1px] border-gray-700 max-w-6xl w-full min-h-[600px] rounded-lg bg-[#111111af] relative"
+        >
+          {/* Color Picker */}
+          <div className="absolute top-5 right-40 flex items-center z-10">
+            <label htmlFor="bg-color-picker" className="mr-2 text-xs text-gray-400 bg-[#222] px-2 py-1 rounded">
+              Chat BG Color
+            </label>
+            <input
+              id="bg-color-picker"
+              type="color"
+              value={color}
+              onChange={(e) => setColor(e.target.value)}
+              className="w-8 h-8 border-none rounded cursor-pointer shadow"
+              style={{ background: "none" }}
+            />
+          </div>
           {/* Header */}
           <div className="flex justify-between h-20 border-b-[1px] border-gray-700">
             <div className="p-4">
@@ -171,10 +200,12 @@ function App() {
 
                 <div className="flex flex-col w-full">
                   <div
-                    className={`p-1 max-w-[70%] rounded-xl ${msg?.user_name === session.user.user_metadata.email
-                      ? "bg-gray-700 text-white ml-auto"
-                      : "bg-gray-500 text-white mr-auto"
-                      }`}
+                    className="p-2 max-w-[70%] rounded-xl text-white"
+                    style={{
+                      background: color,
+                      marginLeft: msg?.user_name === session.user.user_metadata.email ? "auto" : undefined,
+                      marginRight: msg?.user_name !== session.user.user_metadata.email ? "auto" : undefined
+                    }}
                   >
                     <p>{msg.message}</p>
                   </div>
