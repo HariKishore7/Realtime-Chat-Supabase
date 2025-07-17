@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, use } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "../supabaseClient";
 
 function App() {
@@ -146,7 +146,7 @@ function App() {
         }}
       >
         <div
-          className="border-[1px] border-gray-700 max-w-6xl w-full min-h-[600px] rounded-lg bg-[#111111af] relative"
+          className="border-[1px] border-gray-700 max-w-6xl w-full min-h-[600px] rounded-lg bg-[#111111c2] relative"
         >
           {/* Color Picker */}
           <div className="absolute top-5 right-40 flex items-center z-10">
